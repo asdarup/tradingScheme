@@ -1,23 +1,14 @@
+import csv
+
 from pathlib import Path
 from shutil import move
-
-
-def has_csv_file(
-    directory: Path
-) -> bool:
-    """
-    Checks if there are .csv files in "directory"
-    if any → return True 
-    if not → return False
-    """
-    return any(directory.glob("*.csv"))
 
 
 def get_csv_filepath(
     directory: Path
 ) -> Path:
     """
-    Gets the filepath of a file .cvs in "directory"
+    Get filepath of a file .cvs in "directory"
     if any → return filepath
     if not → raise "FileNotFoundError" 
     """
@@ -27,6 +18,63 @@ def get_csv_filepath(
         raise FileNotFoundError(f"No .csv file found in {directory}")
 
     return filepath
+
+
+def has_csv_file(
+    directory: Path
+) -> bool:
+    """
+    Check if there are .csv files in "directory"
+    if any → return True 
+    if not → return False
+    """
+    return any(directory.glob("*.csv"))
+
+
+def make_csv_file(
+        directory: Path,
+        filename: str
+) -> Path:
+    """
+    Create a new file, "filename", in "directory"
+    return filepath
+    """
+    filepath = directory/filename
+
+    filepath.touch(exist_ok=False)
+
+    return filepath
+
+
+def make_directory(
+    base_directory: Path,
+    symbol: str,
+    date: str
+) -> Path:
+    """
+    Create a new directory, /[symbol]_[date], in "base_directory" .
+    return new directory path 
+    """
+    new_directory = base_directory/f"{symbol}_{date}"
+
+    new_directory.mkdir(exist_ok=False)
+
+    return new_directory
+
+
+def move_file(
+    old_filepath: Path,
+    new_directory: Path
+) -> Path:
+    """ 
+    Move file to new directory
+    return new filepath
+    """
+    new_filepath = new_directory/f"{old_filepath.name}"
+
+    move(old_filepath, new_filepath)
+
+    return new_filepath
 
 
 def parse_filename(
@@ -50,43 +98,3 @@ def parse_filename(
         "action": action.lower()    # open, update or close  
     }
 
-
-def create_directory(
-    base_directory: Path,
-    symbol: str,
-    date: str
-) -> Path:
-    """
-    Create a new directory, /[symbol]_[date], in "base_directory" .
-    return new directory path 
-    """
-    new_directory = base_directory/f"{symbol}_{date}"
-
-    new_directory.mkdir()
-
-    return new_directory
-
-
-def move_file(
-    old_filepath: Path,
-    new_directory: Path
-) -> Path:
-    """ 
-    Move file to new directory
-    return new filepath
-    """
-    new_filepath = new_directory/f"{old_filepath.name}"
-
-    move(old_filepath, new_directory)
-
-    return new_filepath
-
-
-def create_file(
-        filename: str,
-        directory: Path
-) -> Path:
-    """
-    Create a new directory in ./data, ./data/[symbol]_[date]
-        return Path
-    """

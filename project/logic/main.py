@@ -3,16 +3,17 @@ The goal with this code is to find the optimal values for 'BUY_ORDER_SCALING_FAC
 """
 
 from pathlib import Path
-
-from project.logic.tasks.file_handler import(
-    has_csv_file,
+from project.logic.tasks.file_handler import (
     get_csv_filepath,
-    parse_filename,
-    create_directory,
-    move_file
+    has_csv_file,
+    make_csv_file,
+    make_directory,
+    move_file,
+    parse_filename
 )
-
-#from project.logic.tasks.data_handler import()
+from project.logic.tasks.data_handler import (
+    ini
+)
 
 
 PORTFOLIO_SIZE: float = None
@@ -22,10 +23,9 @@ AVG_TRANSACTION_FEES: float = None
 BUY_ORDER_SCALING_FACTOR: float = None
 TRAILING_STOP_SCALING_FACTOR:float = None
 
-
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
 INPUT_DIR: Path = BASE_DIR/"input"
-DATA_DIR: Path = BASE_DIR/"data"
+LOG_DIR: Path = BASE_DIR/"log"
 
 
 while has_csv_file(INPUT_DIR):
@@ -38,9 +38,12 @@ while has_csv_file(INPUT_DIR):
     action: str = filename.get("action")
 
     if action == "open":
-        data_directory: Path = create_directory(DATA_DIR, symbol, date)
+        entry_directory: Path = make_directory(LOG_DIR, symbol, date)
 
-        data_filepath: Path = move_file(input_filepath, data_directory)
+        raw_filepath: Path = move_file(input_filepath, entry_directory)
+
+        meta_filepath: Path = make_csv_file(entry_directory, )
+
         
 
  
