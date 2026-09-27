@@ -3,6 +3,7 @@ The goal with this code is to find the optimal values for 'BUY_ORDER_SCALING_FAC
 """
 
 from pathlib import Path
+
 from project.logic.tasks.file_handler import (
     get_csv_file_path,
     has_csv_file,
@@ -58,7 +59,7 @@ while has_csv_file(INPUT_DIRECTORY_PATH):
     elif action == "close":
 
     else:
-        raise ValueError(f"Formating error, {filename.get("action")} does not correspond to 'open', 'update' or 'close'") 
+        raise ValueError(f"Formating error, {file_stem_parts.get("action")} does not correspond to 'open', 'update' or 'close'") 
 
 
     
