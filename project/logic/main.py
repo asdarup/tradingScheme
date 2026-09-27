@@ -4,12 +4,12 @@ The goal with this code is to find the optimal values for 'BUY_ORDER_SCALING_FAC
 
 from pathlib import Path
 from project.logic.tasks.file_handler import (
-    get_csv_filepath,
+    get_csv_file_path,
     has_csv_file,
-    make_csv_file,
+    make_file,
     make_directory,
     move_file,
-    parse_filename
+    parse_file_stem
 )
 from project.logic.tasks.data_handler import (
     ini
@@ -23,26 +23,30 @@ AVG_TRANSACTION_FEES: float = None
 BUY_ORDER_SCALING_FACTOR: float = None
 TRAILING_STOP_SCALING_FACTOR:float = None
 
-BASE_DIR: Path = Path(__file__).resolve().parent.parent
-INPUT_DIR: Path = BASE_DIR/"input"
-LOG_DIR: Path = BASE_DIR/"log"
+BASE_DIRECTORY_PATH: Path = Path(__file__).resolve().parent.parent
+INPUT_DIRECTORY_PATH: Path = BASE_DIRECTORY_PATH/"input"
+LOG_DIRECTORY_PATH: Path = BASE_DIRECTORY_PATH/"log"
 
 
-while has_csv_file(INPUT_DIR):
-    input_filepath: Path = get_csv_filepath(INPUT_DIR)
+while has_csv_file(INPUT_DIRECTORY_PATH):
+    input_file_path: Path = get_csv_file_path(INPUT_DIRECTORY_PATH)
 
-    filename: dict[str, str] = parse_filename(input_filepath)
+    file_stem_parts: dict[str, str] = parse_file_stem(input_file_path)
 
-    symbol: str = filename.get("symbol")
-    date: str = filename.get("date")
-    action: str = filename.get("action")
+    symbol: str = file_stem_parts.get("symbol")
+    date: str = file_stem_parts.get("date")
+    action: str = file_stem_parts.get("action")
 
     if action == "open":
-        entry_directory: Path = make_directory(LOG_DIR, symbol, date)
+        entry_directory_path: Path = make_directory(LOG_DIRECTORY_PATH, f"{symbol}_{date}")
 
-        raw_filepath: Path = move_file(input_filepath, entry_directory)
+        raw_directory_path: Path = make_directory(entry_directory_path, "raw")
 
-        meta_filepath: Path = make_csv_file(entry_directory, )
+        raw_file_path: Path = move_file(input_file_path, raw_directory_path)
+
+        meta_file_path: Path = make_file(entry_directory_path, "meta.csv" )
+
+        swep_file_path: Path = make_file(entry_directory_path, "meta.csv" )
 
         
 

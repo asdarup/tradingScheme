@@ -1,94 +1,91 @@
-import csv
-
 from pathlib import Path
 from shutil import move
 
 
-def get_csv_filepath(
-    directory: Path
+def get_csv_file_path(
+    base_directory_path: Path
 ) -> Path:
     """
-    Get filepath of a file .cvs in "directory"
-    if any → return filepath
+    Get the file path of a .cvs file at "base_directory_path"
+    if any → return file path
     if not → raise "FileNotFoundError" 
     """
-    filepath = next(directory.glob("*.csv"), None)
+    file_path = next(base_directory_path.glob("*.csv"), None)
 
-    if filepath is None:
-        raise FileNotFoundError(f"No .csv file found in {directory}")
+    if file_path is None:
+        raise FileNotFoundError(f"No .csv file found in {base_directory_path}")
 
-    return filepath
+    return file_path
 
 
 def has_csv_file(
-    directory: Path
+    base_directory_path: Path
 ) -> bool:
     """
-    Check if there are .csv files in "directory"
+    Check if there are .csv files at "base_directory_path"
     if any → return True 
     if not → return False
     """
-    return any(directory.glob("*.csv"))
+    return any(base_directory_path.glob("*.csv"))
 
 
-def make_csv_file(
-        directory: Path,
-        filename: str
+def make_file(
+        base_directory_path: Path,
+        new_file_name: str
 ) -> Path:
     """
-    Create a new file, "filename", in "directory"
-    return filepath
+    Create a new file, "new_file_name", at "base_directory_path"
+    return file path
     """
-    filepath = directory/filename
+    new_file_path = base_directory_path/new_file_name
 
-    filepath.touch(exist_ok=False)
+    new_file_path.touch(exist_ok=False)
 
-    return filepath
+    return new_file_path
 
 
 def make_directory(
-    base_directory: Path,
-    symbol: str,
-    date: str
+    base_directory_path: Path,
+    new_directory_name: str
 ) -> Path:
     """
-    Create a new directory, /[symbol]_[date], in "base_directory" .
+    Create a new directory, "new_directory_name", at "base_directory_path" .
     return new directory path 
     """
-    new_directory = base_directory/f"{symbol}_{date}"
+    new_directory_path = base_directory_path/new_directory_name
 
-    new_directory.mkdir(exist_ok=False)
+    new_directory_path.mkdir(exist_ok=False)
 
-    return new_directory
+    return new_directory_path
 
 
 def move_file(
-    old_filepath: Path,
-    new_directory: Path
+    old_file_path: Path,
+    new_directory_path: Path
 ) -> Path:
     """ 
-    Move file to new directory
-    return new filepath
+    Move the file at "old_file_path" to "new_directory_path"
+    return new file path
     """
-    new_filepath = new_directory/f"{old_filepath.name}"
+    new_file_path = new_directory_path/f"{old_file_path.name}"
 
-    move(old_filepath, new_filepath)
+    move(old_file_path, new_file_path)
 
-    return new_filepath
+    return new_file_path
 
 
-def parse_filename(
-    filepath: Path
+def parse_file_stem(
+    file_path: Path
 ) -> dict[str, str]:
     """
     Parse filename, from [symbol_date_action] to [symbol], [date] and [action] 
     if format good → return parts in a dictionary 
     if format bad  → raise "ValueError"
     """
-    parts = filepath.stem.split("_")
+    parts = file_path.stem.split("_")
 
     if len(parts) != 3:
-        raise ValueError(f"{filepath.stem} is not formated as '[symbol]_[date]_[action]'") 
+        raise ValueError(f"{file_path.stem} is not formated as '[symbol]_[date]_[action]'") 
 
     symbol, date, action = parts
 
