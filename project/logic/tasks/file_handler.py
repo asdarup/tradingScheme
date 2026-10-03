@@ -1,5 +1,24 @@
+import yfinance as yf 
+
 from pathlib import Path
 from shutil import move
+
+
+def download_price_data(
+    ticker_symbol: str,
+    period: str,
+    interval: str,
+    base_directory_path: Path
+) -> None:
+    """
+    
+    """
+    data = yf.download(
+        tickers=ticker_symbol, 
+        eriod=period, 
+        interval=interval)
+
+    data.to_csv(base_directory_path)
 
 
 def get_csv_file_path(
@@ -94,4 +113,5 @@ def parse_file_stem(
         "date": date,               # date of action
         "action": action.lower()    # open, update or close  
     }
+
 
