@@ -1,92 +1,125 @@
-"""
-The goal with this code is to find the optimal values for 'BUY_ORDER_SCALING_FACTOR' and 'TRAILING_STOP_SCALING_FACTOR'
-"""
-
 from pathlib import Path
-
-#from project.logic.tasks.file_handler import (
-#    get_csv_file_path,
-#    has_csv_file,
-#    make_file,
-#    make_directory,
-#    move_file,
-#    parse_file_stem
-#)
-#from project.logic.tasks.data_handler import (
-#    ini
-#)
+from .tasks.file_handler import (
+    download_price_data_to_csv,
+    make_directory,
+    make_file
 
 
+)
+from .tasks.data_handler import (
+    initialize_meta_file,    
+)
+
+
+# Constants
+# Project directory paths 
+BASE_DIRECTORY_PATH: Path = Path(__file__).resolve().parent.parent
+LOG_DIRECTORY_PATH: Path = BASE_DIRECTORY_PATH/"log"
+
+# User specific parameters
 PORTFOLIO_SIZE: float = None
 POSITION_SIZE: float = None
 AVG_TRANSACTION_FEES: float = None
 
-BUY_ORDER_MAX_PRIE_HORIZON: float = None
+# Trade specific parameters
+BUY_ORDER_MAX_PRICE_HORIZON: float = None
 BUY_ORDER_SCALING_FACTOR: float = None
 TRAILING_STOP_SCALING_FACTOR:float = None
 
-BASE_DIRECTORY_PATH: Path = Path(__file__).resolve().parent.parent
-LOG_DIRECTORY_PATH: Path = BASE_DIRECTORY_PATH/"log"
-
+# User actions
 ACTIONS: dict[str, str] = {
     "0": "exit_program",
     "1": "open_position",
     "2": "update_position",
-    "3": "close_position"
+    "3": "close_position",
+    "4": "delete_entry",
+    "5": "add_test_data"
 }
 VALID_ACTIONS: str = ", ".join(ACTIONS.keys())
 
+# Action specific parameters
+OPEN_PRICE_DATA_PERIOD: str = "1y"
+OPEN_PRICE_DATA_INTERVAL: str = "1d"
+UPDATE_PRICE_DATA_PERIOD: str = "1wk"
+UPDATE_PRICE_DATA_INTERVAL: str = "5m"
+CLOSE_PRICE_DATA_PERIOD: str = "1wk"
+CLOSE_PRICE_DATA_INTERVAL: str = "1m"
 
+
+# Logic
 while True:
-    action: str = input(
-"""
+    # Get user input 
+    action: str = input("""
 Index   Action
 0       Exit program
 1       Open position
 2       Update position
 3       Close position
+4       Delete entry
+5       Add test data 
 Choose Index: """
     )
-
     action = ACTIONS.get(action)
 
+    # Evaluate user input
     if action not in ACTIONS.values():
+        # Wrong input error handling 
         print (f"Invalid input. Valid inputs: {VALID_ACTIONS}")
 
     elif action == "exit_program":
+        # Exsit program 
         break
 
     elif action == "open_position":
-        ticker_symbol: str = input("Ticker Symbol: ")
+        # Get user Input
+        ticker_symbol: str = input("Ticker Symbol: ").upper()
         sector: str = input("Sector: ")
         trade_initialization_date: str = input("Date: ")
+        action: str = "open"
+
+        # Make entry
+        entry_directory_path: Path = make_directory(
+            base_directory_path=LOG_DIRECTORY_PATH,
+            new_directory_name=f"{ticker_symbol}_{trade_initialization_date}"
+        )
+        raw_directory_path: Path = make_directory(
+            base_directory_path=entry_directory_path,
+            new_directory_name="raw"
+        )
+
+        # Download price data 
+        raw_file_path: Path = make_file(
+            base_directory_path=raw_directory_path,
+            new_file_name=f"{ticker_symbol}_{trade_initialization_date}_{action}.csv"
+        ) 
+        download_price_data_to_csv(
+            ticker_symbol,
+            OPEN_PRICE_DATA_PERIOD,
+            OPEN_PRICE_DATA_INTERVAL,
+            raw_file_path
+        )
+
+        # Make meta file 
+        meta_file_path: Path = make_file(
+            base_directory_path=entry_directory_path,
+            new_file_name="meta.csv" )
+        initialize_meta_file(
+            meta_file_path=meta_file_path
+        )
+
+        # 
+        
 
     #elif action == "update_position":
 
     #elif action == "close_position":
 
-    
-        
+    #elif action == "add_test_data":
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-#    input_file_path: Path = get_csv_file_path(INPUT_DIRECTORY_PATH)
+    #    input_file_path: Path = get_csv_file_path(INPUT_DIRECTORY_PATH)
 #
 #    file_stem_parts: dict[str, str] = parse_file_stem(input_file_path)
 #
@@ -115,6 +148,3 @@ Choose Index: """
 #
 #    else:
 #        raise ValueError(f"Formating error, {file_stem_parts.get("action")} does not correspond to 'open', 'update' or 'close'") 
-#
-#
-#    
