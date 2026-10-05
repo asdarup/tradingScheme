@@ -1,14 +1,6 @@
+import utilities as utl
+
 from pathlib import Path
-from .tasks.file_handler import (
-    download_price_data_to_csv,
-    make_directory,
-    make_file
-
-
-)
-from .tasks.data_handler import (
-    initialize_meta_file,    
-)
 
 
 # Constants
@@ -78,21 +70,21 @@ Choose Index: """
         action: str = "open"
 
         # Make entry
-        entry_directory_path: Path = make_directory(
+        entry_directory_path: Path = utl.make_directory(
             base_directory_path=LOG_DIRECTORY_PATH,
             new_directory_name=f"{ticker_symbol}_{trade_initialization_date}"
         )
-        raw_directory_path: Path = make_directory(
+        raw_directory_path: Path = utl.make_directory(
             base_directory_path=entry_directory_path,
             new_directory_name="raw"
         )
 
         # Download price data 
-        raw_file_path: Path = make_file(
+        raw_file_path: Path = utl.make_file(
             base_directory_path=raw_directory_path,
             new_file_name=f"{ticker_symbol}_{trade_initialization_date}_{action}.csv"
         ) 
-        download_price_data_to_csv(
+        utl.download_price_data_to_csv(
             ticker_symbol,
             OPEN_PRICE_DATA_PERIOD,
             OPEN_PRICE_DATA_INTERVAL,
@@ -100,10 +92,10 @@ Choose Index: """
         )
 
         # Make meta file 
-        meta_file_path: Path = make_file(
+        meta_file_path: Path = utl.make_file(
             base_directory_path=entry_directory_path,
             new_file_name="meta.csv" )
-        initialize_meta_file(
+        utl.initialize_meta_file(
             meta_file_path=meta_file_path
         )
 

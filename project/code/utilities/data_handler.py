@@ -39,8 +39,7 @@ class Meta_Data:
         self.trailing_stop_filled_fee: Optional[float] = None
 
     # def set_buy_order_placed_date
-
-    def buy_order_placed_price
+    # def buy_order_placed_price
 
     
 

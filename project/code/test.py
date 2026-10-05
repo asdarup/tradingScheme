@@ -1,13 +1,10 @@
-from pathlib import Path
+import utilities as utl
 
-from tasks.file_handler import (
-    download_price_data_to_csv,
-    make_file 
-)
+from pathlib import Path
 
 
 # Project directory paths 
-TEST_DIRECTORY_PATH: Path = Path(__file__).resolve().parent
+TEST_DIRECTORY_PATH: Path = (Path(__file__).resolve().parent.parent)/"test"
 
-price_data_file_path: Path = make_file(TEST_DIRECTORY_PATH, "price_data.csv")
-download_price_data_to_csv("KOG","1y", "1d", price_data_file_path)
+price_data_file_path: Path = utl.make_file(TEST_DIRECTORY_PATH, "price_data.csv")
+utl.download_price_data_to_csv("KOG.OL","1y", "1d", price_data_file_path)

@@ -37,6 +37,7 @@ def download_price_data_to_csv(
     # period="1mo"    interval="1mo"    1 month
     # period="3mo"    interval="3mo"    3 months
 
+    print(data)
 
     data.to_csv(file_path)
 
