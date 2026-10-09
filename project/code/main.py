@@ -14,7 +14,7 @@ POSITION_SIZE: float = None
 AVG_TRANSACTION_FEES: float = None
 
 # Trade specific parameters
-BUY_ORDER_MAX_PRICE_HORIZON: float = None
+BUY_ORDER_MAX_PRICE_PERIODE: int = None
 BUY_ORDER_SCALING_FACTOR: float = None
 TRAILING_STOP_SCALING_FACTOR:float = None
 

@@ -2,6 +2,8 @@ import csv
 import pandas as pd
 import yfinance as yf
 
+import utilities.data_analysis_handler as dah
+
 from pathlib import Path
 from typing import Optional
 
@@ -11,16 +13,16 @@ class Meta_Data:
     
     """
     def __init__(
-        self, 
+        self,
         ticker_symbol: str,
         sector: str,
-        trade_initialization_date: str
+        trade_initialization_date: str,
+        entry_directory_path: Path
     ) -> None:
-        
+
         # Stock properties
         self.ticker_symbol: str = ticker_symbol
         self.sector: str = sector
-        self.trade_initialization_date = trade_initialization_date
         # Buy order placed properties
         self.buy_order_placed_date: Optional[str] = None
         self.buy_order_placed_price: Optional[float] = None
@@ -38,11 +40,45 @@ class Meta_Data:
         self.trailing_stop_filled_date: Optional[str] = None
         self.trailing_stop_filled_price: Optional[float] = None
         self.trailing_stop_filled_quantity: Optional[int] = None
-        self.trailing_stop_filled_fee: Optional[float] = None
+        self.trailing_stop_filled_fees: Optional[float] = None
+        # Lifecycle 
+        self.trade_initialization_date: str = trade_initialization_date
+        self.trade_update_dates: list[str] = []
+        self.trade_close_date: Optional[str] = None
+        # Analysis
+        self.opening_average_true_range: Optional[float] = None
+        # Utilities 
+        self.entry_directory_path: Path = entry_directory_path
 
-    # def set_buy_order_placed_date
-    # def buy_order_placed_price
-
+        
+    # Set buy order placed properties
+    #def set_buy_order_placed_date() -> None:
+    #def set_buy_order_placed_price(self, max_price_periode: int, scaling_factor: float) -> None:
+    #    average_true_range = 
+    #    buy_order_placed_price = max_price_periode
+    #
+    #
+    #def set_buy_order_placed_quantity() -> None:self.ticker_symbol: str = ticker_symbol
+    #    self.sector: str = sector
+    #    self.trade_initialization_date = trade_initia
+    # Set buy order filled properties
+    #def set_buy_order_filled_date() -> None:
+    #def set_buy_order_filled_price() -> None:
+    #def set_buy_order_filled_quantity() -> None:
+    #def set_buy_order_filled_fees() -> None:
+    # Set trailing stop placed properties
+    #def set_trailing_stop_placed_date() -> None:
+    #def set_trailing_stop_placed_trigger() -> None:
+    #def set_trailing_stop_placed_quantity() -> None:
+    # Set trailing stop filled properties
+    #def set_trailing_stop_filled_date() -> None:
+    #def set_trailing_stop_filled_price() -> None:
+    #def set_trailing_stop_filled_quantity() -> None:
+    #def set_trailing_stop_filled_fee() -> None:
+    # Analysis
+    def set_opening_average_true_range(self, periode) -> float:
+        opening_raw_file_path: Path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.trade_initialization_date}_open"
+        
 
 # Functions 
 def download_price_data_to_csv(
