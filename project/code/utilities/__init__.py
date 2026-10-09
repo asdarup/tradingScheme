@@ -7,7 +7,7 @@ from .meta_data_handler import (
     initialize_meta_file
 )
 
-from .file_handler import (
+from .data_storage_handler import (
     make_directory,
     make_file
 )
