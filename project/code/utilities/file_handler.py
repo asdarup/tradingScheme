@@ -6,14 +6,14 @@ from shutil import move
 
 
 def make_directory(
-    base_directory_path: Path,
+    target_directory_path: Path,
     new_directory_name: str
 ) -> Path:
     """
-    Create a new directory, "new_directory_name", at "base_directory_path"
+    Create a new directory, "new_directory_name", at "target_directory_path"
     return new directory path 
     """
-    new_directory_path = base_directory_path/new_directory_name
+    new_directory_path = target_directory_path/new_directory_name
 
     new_directory_path.mkdir(exist_ok=False)
 
@@ -21,14 +21,14 @@ def make_directory(
 
 
 def make_file(
-        base_directory_path: Path,
+        target_directory_path: Path,
         new_file_name: str
 ) -> Path:
     """
-    Create a new file, "new_file_name", at "base_directory_path"
+    Create a new file, "new_file_name", at "target_directory_path"
     return file path
     """
-    new_file_path = base_directory_path/new_file_name
+    new_file_path = target_directory_path/new_file_name
 
     new_file_path.touch(exist_ok=False)
 
@@ -64,30 +64,30 @@ def make_file(
 
 
 def get_csv_file_path(
-    base_directory_path: Path
+    target_directory_path: Path
 ) -> Path:
     """
-    Get the file path of a .cvs file at "base_directory_path"
+    Get the file path of a .cvs file at "target_directory_path"
     if any → return file path
     if not → raise "FileNotFoundError" 
     """
-    file_path = next(base_directory_path.glob("*.csv"), None)
+    file_path = next(target_directory_path.glob("*.csv"), None)
 
     if file_path is None:
-        raise FileNotFoundError(f"No .csv file found in {base_directory_path}")
+        raise FileNotFoundError(f"No .csv file found in {target_directory_path}")
 
     return file_path
 
 
 def has_csv_file(
-    base_directory_path: Path
+    target_directory_path: Path
 ) -> bool:
     """
-    Check if there are .csv files at "base_directory_path"
+    Check if there are .csv files at "target_directory_path"
     if any → return True 
     if not → return False
     """
-    return any(base_directory_path.glob("*.csv"))
+    return any(target_directory_path.glob("*.csv"))
 
 
 def move_file(

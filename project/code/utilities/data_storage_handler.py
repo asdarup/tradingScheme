@@ -1,5 +1,5 @@
 import csv 
-import pandas
+import pandas as pd
 import yfinance as yf
 
 from pathlib import Path
@@ -44,22 +44,19 @@ class Meta_Data:
     # def buy_order_placed_price
 
 
-
-
-
 # Functions 
 def download_price_data_to_csv(
     ticker_symbol: str,
     period: str,
     interval: str,
-    file_path: Path
+    target_file_path: Path
 ) -> None:
     """
-    Download price data from Yahoo Finance and write that data to a .csv file at "file_path"
+    Download price data from Yahoo Finance and write that data to a .csv file at "target_file_path"
     """
 
-    if file_path.suffix != ".csv":
-        raise ValueError(f"{file_path.name} is not .csv file")
+    if target_file_path.suffix != ".csv":
+        raise ValueError(f"{target_file_path.name} is not .csv file")
 
     data = yf.download(
         tickers=ticker_symbol, 
@@ -79,9 +76,9 @@ def download_price_data_to_csv(
     # period="1mo"    interval="1mo"    1 month
     # period="3mo"    interval="3mo"    3 months
 
-    print(data)
+    data.columns = data.columns.get_level_values(0)
 
-    data.to_csv(file_path)
+    data.to_csv(target_file_path)
 
 
 def initialize_meta_file(
