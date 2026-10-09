@@ -16,7 +16,7 @@ class Meta_Data:
         self,
         ticker_symbol: str,
         sector: str,
-        trade_initialization_date: str,
+        trade_open_date: str,
         entry_directory_path: Path
     ) -> None:
 
@@ -42,7 +42,7 @@ class Meta_Data:
         self.trailing_stop_filled_quantity: Optional[int] = None
         self.trailing_stop_filled_fees: Optional[float] = None
         # Lifecycle 
-        self.trade_initialization_date: str = trade_initialization_date
+        self.trade_open_date: str = trade_open_date
         self.trade_update_dates: list[str] = []
         self.trade_close_date: Optional[str] = None
         # Analysis
@@ -76,47 +76,55 @@ class Meta_Data:
     #def set_trailing_stop_filled_quantity() -> None:
     #def set_trailing_stop_filled_fee() -> None:
     # Analysis
-    def set_opening_average_true_range(self, periode) -> float:
-        opening_raw_file_path: Path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.trade_initialization_date}_open"
+    def set_average_true_range(
+        self,
+        period: int,
+        source_file_path: Path
+    ) -> None:
         
+        self.opening_average_true_range = dah.find_average_true_range(
+            period=period,
+            source_file_path=source_file_path
+        )
+
+
+    # Utilities 
+    def get_raw_open_file_path(
+        self,
+    ) -> Path:
+        
+        return (
+            self.entry_directory_path
+            / "raw"
+            / f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
+        )
+
+
+    def get_raw_update_file_path(    
+        self,
+        action_date: str
+    ) -> Path:
+        
+        return (
+            self.entry_directory_path
+            / "raw"
+            / f"{self.ticker_symbol}_{action_date}_update.csv"
+        )
+
+
+    def get_raw_close_file_path(
+            self,
+        ) -> Path:
+        
+        return (
+            self.entry_directory_path
+            / "raw"
+            / f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
+        )
+    
+
 
 # Functions 
-def download_price_data_to_csv(
-    ticker_symbol: str,
-    period: str,
-    interval: str,
-    target_file_path: Path
-) -> None:
-    """
-    Download price data from Yahoo Finance and write that data to a .csv file at "target_file_path"
-    """
-
-    if target_file_path.suffix != ".csv":
-        raise ValueError(f"{target_file_path.name} is not .csv file")
-
-    data = yf.download(
-        tickers=ticker_symbol, 
-        period=period, 
-        interval=interval
-    )
-
-    # period="1m"     interval="1m"     1 minute
-    # period="2m"     interval="2m"     2 minutes
-    # period="5m"     interval="5m"     5 minutes
-    # period="15m"    interval="15m"    15 minutes
-    # period="30m"    interval="30m"    30 minutes
-    # period="60m"    interval="60m"    1 hour
-    # period="1d"     interval="1d"     1 day
-    # period="5d"     interval="5d"     5 days
-    # period="1wk"    interval="1wk"    1 week
-    # period="1mo"    interval="1mo"    1 month
-    # period="3mo"    interval="3mo"    3 months
-
-    data.columns = data.columns.get_level_values(0)
-
-    data.to_csv(target_file_path)
-
-
 def initialize_meta_file(
     meta_file_path: Path
 ) -> None:

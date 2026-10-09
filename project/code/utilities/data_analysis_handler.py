@@ -3,12 +3,12 @@ import pandas as pd
 from pathlib import Path
 
 def find_average_true_range(
-    periode: int,
+    period: int,
     source_file_path: Path
 ) -> float:
     
     full_data = pd.read_csv(source_file_path)
-    periode_data = full_data.tail(periode + 1)
+    periode_data = full_data.tail(period + 1)
 
     close = periode_data.get("Close")
     high = periode_data.get("High")
