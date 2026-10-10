@@ -44,7 +44,6 @@ def download_price_data_to_csv(
     """
     Download price data from Yahoo Finance and write that data to a .csv file at "target_file_path"
     """
-
     if target_file_path.suffix != ".csv":
         raise ValueError(f"{target_file_path.name} is not .csv file")
 

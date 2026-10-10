@@ -1,8 +1,11 @@
 # Trade specific parameters
-BUY_ORDER_MAX_PRICE_PERIODE: int = None
+PORTFOLIO_RISK_LIMIT: float = None
+POSITION_SIZE_LIMIT: float = None
 AVERAGE_TRUE_RANGE_PERIODE: int = None
+MAX_PRICE_PERIODE: int = None
 BUY_ORDER_SCALING_FACTOR: float = None
 TRAILING_STOP_SCALING_FACTOR:float = None
+
 
 
 # Action specific parameters

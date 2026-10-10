@@ -53,7 +53,7 @@ Choose Index: """
         # Get user Input
         ticker_symbol: str = input("Ticker Symbol: ").upper()
         sector: str = input("Sector: ")
-        trade_initialization_date: str = input("Date: ")
+        trade_initialization_date: str = input("Trade initialization, date: ")
         action: str = "open"
 
         # Make entry

@@ -1,7 +1,4 @@
 from .config import (
-    BUY_ORDER_MAX_PRICE_PERIODE,
-    BUY_ORDER_SCALING_FACTOR,
-    TRAILING_STOP_SCALING_FACTOR,
     OPEN_PRICE_DATA_PERIOD,
     OPEN_PRICE_DATA_INTERVAL,
     UPDATE_PRICE_DATA_PERIOD,
@@ -10,12 +7,8 @@ from .config import (
     CLOSE_PRICE_DATA_INTERVAL
 )
 
-from .data_analysis_handler import (
-    find_average_true_range,
-    find_max_price
-)
-
 from .meta_data_handler import (
+    Meta_Data,
     initialize_meta_file
 )
 

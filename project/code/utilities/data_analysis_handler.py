@@ -2,6 +2,7 @@ import pandas as pd
 
 from pathlib import Path
 
+
 def find_average_true_range(
     period: int,
     source_file_path: Path
@@ -43,4 +44,17 @@ def find_max_price(
     max_price = high.max()
 
     return float(max_price)
+
+
+def find_risk_adjusted_position_size(
+    portfolio_risk_limit: float,
+    position_risk: float,
+    position_size_limit: float
+) -> float:
     
+    risk_adjusted_position_size = min(
+        position_size_limit,
+        portfolio_risk_limit/position_risk
+    )
+
+    return risk_adjusted_position_size
