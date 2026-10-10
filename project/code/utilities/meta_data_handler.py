@@ -53,14 +53,21 @@ class Meta_Data:
         
     # Set buy order placed properties
     #def set_buy_order_placed_date() -> None:
-    #def set_buy_order_placed_price(self, max_price_periode: int, scaling_factor: float) -> None:
-    #    average_true_range = 
-    #    buy_order_placed_price = max_price_periode
-    #
-    #
-    #def set_buy_order_placed_quantity() -> None:self.ticker_symbol: str = ticker_symbol
-    #    self.sector: str = sector
-    #    self.trade_initialization_date = trade_initia
+    
+    
+    def set_buy_order_placed_price(
+        self,
+        max_price_periode: int,
+        scaling_factor: float
+    ) -> None:
+        if self.opening_average_true_range is None:
+            self 
+        average_true_range = 
+        buy_order_placed_price = max_price_periode
+    
+    
+    #def set_buy_order_placed_quantity() -> None:
+
     # Set buy order filled properties
     #def set_buy_order_filled_date() -> None:
     #def set_buy_order_filled_price() -> None:
@@ -99,7 +106,6 @@ class Meta_Data:
             / f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
         )
 
-
     def get_raw_update_file_path(    
         self,
         action_date: str
@@ -110,7 +116,6 @@ class Meta_Data:
             / "raw"
             / f"{self.ticker_symbol}_{action_date}_update.csv"
         )
-
 
     def get_raw_close_file_path(
             self,
