@@ -8,11 +8,11 @@ def find_average_true_range(
 ) -> float:
     
     full_data = pd.read_csv(source_file_path)
-    periode_data = full_data.tail(period + 1)
+    period_data = full_data.tail(period + 1)
 
-    close = periode_data.get("Close")
-    high = periode_data.get("High")
-    low = periode_data.get("Low")
+    close = period_data["Close"]
+    high = period_data["High"]
+    low = period_data["Low"]
 
     previous_close = close.shift(1)
 
@@ -28,3 +28,19 @@ def find_average_true_range(
     average_true_range = true_range.mean()
 
     return float(average_true_range)
+
+
+def find_max_price(
+    period: int,
+    source_file_path: Path
+) -> float:
+
+    full_data = pd.read_csv(source_file_path)
+    periode_data = full_data.tail(period)
+
+    high = periode_data["High"]
+
+    max_price = high.max()
+
+    return float(max_price)
+    

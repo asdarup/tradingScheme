@@ -1,0 +1,14 @@
+# Trade specific parameters
+BUY_ORDER_MAX_PRICE_PERIODE: int = None
+AVERAGE_TRUE_RANGE_PERIODE: int = None
+BUY_ORDER_SCALING_FACTOR: float = None
+TRAILING_STOP_SCALING_FACTOR:float = None
+
+
+# Action specific parameters
+OPEN_PRICE_DATA_PERIOD: str = "1y"
+OPEN_PRICE_DATA_INTERVAL: str = "1d"
+UPDATE_PRICE_DATA_PERIOD: str = "1wk"
+UPDATE_PRICE_DATA_INTERVAL: str = "5m"
+CLOSE_PRICE_DATA_PERIOD: str = "1wk"
+CLOSE_PRICE_DATA_INTERVAL: str = "1m"

@@ -2,6 +2,7 @@ import csv
 import pandas as pd
 import yfinance as yf
 
+import utilities.config as cnf
 import utilities.data_analysis_handler as dah
 
 from pathlib import Path
@@ -25,7 +26,7 @@ class Meta_Data:
         self.sector: str = sector
         # Buy order placed properties
         self.buy_order_placed_date: Optional[str] = None
-        self.buy_order_placed_price: Optional[float] = None
+        self.buy_order_placed_trigger: Optional[float] = None
         self.buy_order_placed_quantity: Optional[int] = None
         # Buy order filled properties
         self.buy_order_filled_date: Optional[str] = None
@@ -46,7 +47,10 @@ class Meta_Data:
         self.trade_update_dates: list[str] = []
         self.trade_close_date: Optional[str] = None
         # Analysis
-        self.opening_average_true_range: Optional[float] = None
+        self.opening_average_true_range: Optional[float] = self.set_average_true_range(
+            cnf.AVERAGE_TRUE_RANGE_PERIODE,
+            self.get_raw_open_file_path()
+        )
         # Utilities 
         self.entry_directory_path: Path = entry_directory_path
 
@@ -55,15 +59,10 @@ class Meta_Data:
     #def set_buy_order_placed_date() -> None:
     
     
-    def set_buy_order_placed_price(
+    def set_buy_order_placed_trigger(
         self,
-        max_price_periode: int,
-        scaling_factor: float
-    ) -> None:
-        if self.opening_average_true_range is None:
-            self 
-        average_true_range = 
-        buy_order_placed_price = max_price_periode
+    ) -> float:
+        return 
     
     
     #def set_buy_order_placed_quantity() -> None:
@@ -87,12 +86,16 @@ class Meta_Data:
         self,
         period: int,
         source_file_path: Path
-    ) -> None:
+    ) -> float:
         
-        self.opening_average_true_range = dah.find_average_true_range(
+        average_true_range = dah.find_average_true_range(
             period=period,
             source_file_path=source_file_path
         )
+
+        return average_true_range
+
+    def set_max_price
 
 
     # Utilities 
@@ -100,32 +103,27 @@ class Meta_Data:
         self,
     ) -> Path:
         
-        return (
-            self.entry_directory_path
-            / "raw"
-            / f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
-        )
+        raw_open_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
+
+        return raw_open_file_path
 
     def get_raw_update_file_path(    
         self,
         action_date: str
     ) -> Path:
         
-        return (
-            self.entry_directory_path
-            / "raw"
-            / f"{self.ticker_symbol}_{action_date}_update.csv"
-        )
+        raw_update_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{action_date}_update.csv"
+
+        return raw_update_file_path
+
 
     def get_raw_close_file_path(
             self,
         ) -> Path:
         
-        return (
-            self.entry_directory_path
-            / "raw"
-            / f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
-        )
+        raw_close_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
+
+        return raw_close_file_path
     
 
 

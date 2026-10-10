@@ -13,11 +13,6 @@ PORTFOLIO_SIZE: float = None
 POSITION_SIZE: float = None
 AVG_TRANSACTION_FEES: float = None
 
-# Trade specific parameters
-BUY_ORDER_MAX_PRICE_PERIODE: int = None
-BUY_ORDER_SCALING_FACTOR: float = None
-TRAILING_STOP_SCALING_FACTOR:float = None
-
 # User actions
 ACTIONS: dict[str, str] = {
     "0": "exit_program",
@@ -28,14 +23,6 @@ ACTIONS: dict[str, str] = {
     "5": "add_test_data"
 }
 VALID_ACTIONS: str = ", ".join(ACTIONS.keys())
-
-# Action specific parameters
-OPEN_PRICE_DATA_PERIOD: str = "1y"
-OPEN_PRICE_DATA_INTERVAL: str = "1d"
-UPDATE_PRICE_DATA_PERIOD: str = "1wk"
-UPDATE_PRICE_DATA_INTERVAL: str = "5m"
-CLOSE_PRICE_DATA_PERIOD: str = "1wk"
-CLOSE_PRICE_DATA_INTERVAL: str = "1m"
 
 
 # Logic
@@ -86,8 +73,8 @@ Choose Index: """
         ) 
         utl.download_price_data_to_csv(
             ticker_symbol,
-            OPEN_PRICE_DATA_PERIOD,
-            OPEN_PRICE_DATA_INTERVAL,
+            utl.OPEN_PRICE_DATA_PERIOD,
+            utl.OPEN_PRICE_DATA_INTERVAL,
             raw_file_path
         )
 
