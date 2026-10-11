@@ -1,4 +1,4 @@
-# Trade specific parameters
+# Analysis specific parameters
 PORTFOLIO_RISK_LIMIT: float = None
 POSITION_SIZE_LIMIT: float = None
 AVERAGE_TRUE_RANGE_PERIODE: int = None

@@ -18,43 +18,61 @@ class Meta_Data:
         self,
         ticker_symbol: str,
         sector: str,
-        trade_open_date: str,
+        entry_open_date: str,
         entry_directory_path: Path
     ) -> None:
+
+        # Portfolio properties
+        self.portfolio_size: Optional[float] = None 
 
         # Stock properties
         self.ticker_symbol: str = ticker_symbol
         self.sector: str = sector
+        
         # Buy order placed properties
         self.buy_order_placed_date: Optional[str] = None
         self.buy_order_placed_trigger: Optional[float] = None
         self.buy_order_placed_quantity: Optional[int] = None
+        
         # Buy order filled properties
         self.buy_order_filled_date: Optional[str] = None
         self.buy_order_filled_price: Optional[float] = None
         self.buy_order_filled_quantity: Optional[int] = None
         self.buy_order_filled_fees: Optional[float] = None
+        
         # Trailing stop placed properties
         self.trailing_stop_placed_date: Optional[str] = None
         self.trailing_stop_placed_trigger: Optional[float] = None
         self.trailing_stop_placed_quantity: Optional[int] = None
+        
         # Trailing stop filled properties
         self.trailing_stop_filled_date: Optional[str] = None
         self.trailing_stop_filled_price: Optional[float] = None
         self.trailing_stop_filled_quantity: Optional[int] = None
         self.trailing_stop_filled_fees: Optional[float] = None
+        
         # Lifecycle 
-        self.trade_open_date: str = trade_open_date
-        self.trade_update_dates: list[str] = []
-        self.trade_close_date: Optional[str] = None
+        self.entry_open_date: str = entry_open_date
+        self.entry_update_dates: list[str] = []
+        self.entry_close_date: Optional[str] = None
+        
         # Analysis
         self.open_average_true_range: Optional[float] = None
         self.open_max_price: Optional[float] = None
         self.open_risk_adjusted_position_size: Optional[float] = None
+        
         # Utilities 
         self.entry_directory_path: Path = entry_directory_path
 
+
+    # Portfolio properties
+    def set_portfolio_size(
+        self,
+        portfolio_size
+    ) -> None:
         
+        self.portfolio_size = portfolio_size 
+    
     # Set buy order placed properties
     def set_buy_order_placed_date(
         self,
@@ -79,8 +97,10 @@ class Meta_Data:
     
     def set_buy_order_placed_quantity(
         self,
-        portfolio_size: float
     ) -> None:
+
+        if self.portfolio_size is None:
+            raise ValueError("portfolio_size is not initialized")
 
         if self.buy_order_placed_trigger is None:
             raise ValueError("buy_order_placed_trigger is not initialized")
@@ -88,7 +108,7 @@ class Meta_Data:
         if self.open_risk_adjusted_position_size is None:
             raise ValueError("open_risk_adjusted_position_size is not initialized")
         
-        self.buy_order_placed_quantity = math.trunc(portfolio_size*self.open_risk_adjusted_position_size/self.buy_order_placed_trigger)
+        self.buy_order_placed_quantity = math.trunc(self.portfolio_size*self.open_risk_adjusted_position_size/self.buy_order_placed_trigger)
         
 
     # Set buy order filled properties
@@ -167,7 +187,7 @@ class Meta_Data:
         self,
     ) -> Path:
         
-        raw_open_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.trade_open_date}_open.csv"
+        raw_open_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.entry_open_date}_open.csv"
 
         return raw_open_file_path
 
@@ -186,10 +206,10 @@ class Meta_Data:
             self,
         ) -> Path:
 
-        if self.trade_close_date is None:
-            raise ValueError("trade_close_date is not initialized")
+        if self.entry_close_date is None:
+            raise ValueError("entry_close_date is not initialized")
         
-        raw_close_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.trade_close_date}_close.csv"
+        raw_close_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.entry_close_date}_close.csv"
 
         return raw_close_file_path
     
