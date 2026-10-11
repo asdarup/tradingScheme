@@ -9,7 +9,7 @@ from .config import (
 
 from .meta_data_handler import (
     Meta_Data,
-    initialize_meta_file
+    write_meta_file
 )
 
 from .data_storage_handler import (

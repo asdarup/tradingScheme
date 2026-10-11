@@ -57,9 +57,9 @@ class Meta_Data:
         self.entry_close_date: Optional[str] = None
         
         # Analysis
-        self.open_average_true_range: Optional[float] = None
-        self.open_max_price: Optional[float] = None
-        self.open_risk_adjusted_position_size: Optional[float] = None
+        self.average_true_range: Optional[float] = None
+        self.max_price: Optional[float] = None
+        self.risk_adjusted_position_size: Optional[float] = None
         
         # Utilities 
         self.entry_directory_path: Path = entry_directory_path
@@ -86,13 +86,13 @@ class Meta_Data:
         self
     ) -> None:
 
-        if self.open_average_true_range is None:
-            raise ValueError("open_average_true_range is not initialized")
+        if self.average_true_range is None:
+            raise ValueError("average_true_range is not initialized")
 
-        if self.open_max_price is None:
-            raise ValueError("open_max_price is not initialized")
+        if self.max_price is None:
+            raise ValueError("max_price is not initialized")
 
-        self.buy_order_placed_trigger = self.open_max_price + self.open_average_true_range*cnf.BUY_ORDER_SCALING_FACTOR
+        self.buy_order_placed_trigger = self.max_price + self.average_true_range*cnf.BUY_ORDER_SCALING_FACTOR
 
     
     def set_buy_order_placed_quantity(
@@ -105,10 +105,10 @@ class Meta_Data:
         if self.buy_order_placed_trigger is None:
             raise ValueError("buy_order_placed_trigger is not initialized")
 
-        if self.open_risk_adjusted_position_size is None:
-            raise ValueError("open_risk_adjusted_position_size is not initialized")
+        if self.risk_adjusted_position_size is None:
+            raise ValueError("risk_adjusted_position_size is not initialized")
         
-        self.buy_order_placed_quantity = math.trunc(self.portfolio_size*self.open_risk_adjusted_position_size/self.buy_order_placed_trigger)
+        self.buy_order_placed_quantity = math.trunc(self.portfolio_size*self.risk_adjusted_position_size/self.buy_order_placed_trigger)
         
 
     # Set buy order filled properties
@@ -127,10 +127,10 @@ class Meta_Data:
         if self.buy_order_placed_trigger is None:
             raise ValueError("buy_order_placed_trigger is not initialized")
 
-        if self.open_average_true_range is None:
-            raise ValueError("open_average_true_range is not initialized")
+        if self.average_true_range is None:
+            raise ValueError("average_true_range is not initialized")
 
-        self.trailing_stop_placed_trigger = self.open_average_true_range*cnf.TRAILING_STOP_SCALING_FACTOR/self.buy_order_placed_trigger
+        self.trailing_stop_placed_trigger = self.average_true_range*cnf.TRAILING_STOP_SCALING_FACTOR/self.buy_order_placed_trigger
 
 
     def set_trailing_stop_placed_quantity(
@@ -148,34 +148,34 @@ class Meta_Data:
     #def set_trailing_stop_filled_quantity() -> None:
     #def set_trailing_stop_filled_fee() -> None:
     # Analysis
-    def set_open_average_true_range(
+    def set_average_true_range(
         self
     ) -> None:
         
-        self.open_average_true_range = dah.find_average_true_range(
+        self.average_true_range = dah.find_average_true_range(
             period=cnf.AVERAGE_TRUE_RANGE_PERIODE,
             source_file_path=self.get_raw_open_file_path()
         )
 
 
-    def set_open_max_price(
+    def set_max_price(
         self
     ) -> None:
         
-        self.open_max_price = dah.find_max_price(
+        self.max_price = dah.find_max_price(
             period=cnf.MAX_PRICE_PERIODE,
             source_file_path=self.get_raw_open_file_path()
         )
 
 
-    def set_open_risk_adjusted_position_size(
+    def set_risk_adjusted_position_size(
         self
     ) -> None:
 
         if self.trailing_stop_placed_trigger is None:
             raise ValueError("trailing_stop_placed_trigger is not initialized")
 
-        self.open_risk_adjusted_position_size = dah.find_risk_adjusted_position_size(
+        self.risk_adjusted_position_size = dah.find_risk_adjusted_position_size(
             portfolio_risk_limit=cnf.PORTFOLIO_RISK_LIMIT,
             position_risk=self.trailing_stop_placed_trigger,
             position_size_limit=cnf.POSITION_SIZE_LIMIT
@@ -212,15 +212,15 @@ class Meta_Data:
         raw_close_file_path = self.entry_directory_path/"raw"/f"{self.ticker_symbol}_{self.entry_close_date}_close.csv"
 
         return raw_close_file_path
-    
 
 
 # Functions 
-def initialize_meta_file(
+def write_meta_file(
+    meta_data: Meta_Data,
     meta_file_path: Path
 ) -> None:
     """
-    Initialize the file at "meta_file_path"
+    Write data to the file at "meta_file_path"
     """
     with open(
         file=meta_file_path,
@@ -230,11 +230,11 @@ def initialize_meta_file(
 
         writer = csv.writer(file)
 
+        # Write header row
         writer.writerow([
             # Stock properties
             "ticker_symbol",
             "sector",
-            "initialization_date",
             # Buy order placed properties
             "buy_order_placed_date",
             "buy_order_placed_trigger",
@@ -255,11 +255,95 @@ def initialize_meta_file(
             "trailing_stop_filled_fees"
         ])
 
-def write_meta_file(
-    meta_file_path: Path,
-    meta_data: Meta_Data
-) -> None:
-    """
-    Write data to the file at "meta_file_path"
-    """
-        
+        # Write data row
+        writer.writerow([
+            # Stock properties
+            meta_data.ticker_symbol,
+            meta_data.sector,
+            # Buy order placed properties
+            meta_data.buy_order_placed_date,
+            meta_data.buy_order_placed_trigger,
+            meta_data.buy_order_placed_quantity,
+            # Buy order filled properties
+            meta_data.buy_order_filled_date,
+            meta_data.buy_order_filled_price,
+            meta_data.buy_order_filled_quantity,
+            meta_data.buy_order_filled_fees,
+            # Trailing stop placed properties
+            meta_data.trailing_stop_placed_date,
+            meta_data.trailing_stop_placed_trigger,
+            meta_data.trailing_stop_placed_quantity,
+            # Trailing stop filled properties
+            meta_data.trailing_stop_filled_date,
+            meta_data.trailing_stop_filled_price,
+            meta_data.trailing_stop_filled_quantity,
+            meta_data.trailing_stop_filled_fees
+        ])
+
+"""
+# portfilio properties
+"portfolio_size",
+"portfolio_risk_limit",
+"position_size_limit",
+
+# Stock properties
+"company_name",
+"ticker_symbol",
+"sector",
+"market_capitalization",
+"earnings_date",
+
+# Stock price patern properties
+"pattern",
+"breakout_percentage_from_resistance",
+"flag_depth_percent",
+"flag_length_days",
+"up_trend__depth_percent",
+"up_trend_length_days
+
+
+# Stock price properties
+"percentage_increase_this_q",
+"percentage_increase_this_q_minus_1",
+"percentage_increase_this_q_minus_2",
+"percentage_increase_after_earnings_q_minus_1",
+"percentage_increase_after_earnings_q_minus_2",
+"percentage_increase_after_earnings_q_minus_3",
+
+# Stock price analysis
+"average_true_range",
+"max_price",
+"percentage_from_max_price",
+"risk_adjusted_position_size",
+
+# Buy order placed properties
+"buy_order_placed_date",
+"buy_order_placed_trigger",
+"buy_order_placed_quantity",
+
+# Buy order filled properties
+"buy_order_filled_date",
+"buy_order_filled_price",
+"buy_order_filled_quantity",
+"buy_order_filled_fees",
+
+# Trailing stop placed properties
+"trailing_stop_placed_date",
+"trailing_stop_placed_trigger",
+"trailing_stop_placed_quantity",
+
+# Trailing stop filled properties
+"trailing_stop_filled_date",
+"trailing_stop_filled_price",
+"trailing_stop_filled_quantity",
+"trailing_stop_filled_fees"
+
+# Lifecycle properties
+"entry_open_date",
+"entry_close_date",
+
+# profit loss properties
+"realized_profit_loss_price",
+"realized_profit_loss_percent",
+"trade_duration_days
+"""

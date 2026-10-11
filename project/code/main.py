@@ -17,14 +17,14 @@ INITIAL_ACTIONS: dict[str, str] = {
     "1": "open_new_entry",
     "2": "update_active_entry",
     "3": "close_active_entry",
-    "4": "find_entery",
+    "4": "find_entry",
     "5": "delete_entry"
 }
 VALID_INITIAL_ACTIONS: str = ", ".join(INITIAL_ACTIONS.keys())
 
 
 OPEN_NEW_ENTRY_SECONDARY_ACTION: dict[str, str] = {
-    "0": "return_to_main_menue",
+    "0": "return_to_main_menu",
     "1": "operational_entry",
     "2": "preliminary_entry"
 }
@@ -63,7 +63,7 @@ Choose Index: """
         # Get secondary user input 
         open_new_entry_secondary_action: str = input("""
 Index   Action
-0       Return to main menue
+0       Return to main menu
 1       Operational entry
 2       Preliminary entry 
 Choose Index: """)
@@ -74,47 +74,39 @@ Choose Index: """)
             # Wrong input error handling 
             print (f"Invalid input. Valid inputs: {VALID_OPEN_NEW_ENTRY_SECONDARY_ACTION}")
         
-        elif open_new_entry_secondary_action == "return_to_main_menue":
+        elif open_new_entry_secondary_action == "return_to_main_menu":
             # Restart loop  
             continue
 
         elif open_new_entry_secondary_action == "operational_entry": 
             # Set initial parameters
-            portfolio_size:float = float(input("Portfolio size in stock valuta: "))
+            portfolio_size:float = float(input("Portfolio size in stock currency:"))
             ticker_symbol: str = input("Ticker Symbol: ").upper()
             sector: str = input("Sector: ")
-            entry_open_date: str = input("Open trade, date: ")
+            entry_open_date: str = input("Open trade, YYMMDD: ")
             buy_order_placed_date: str = input("Order sent to market,date: ")
             action: str = "open"
 
             # Make entry
             entry_directory_path: Path = utl.make_directory(
                 base_directory_path=LOG_DIRECTORY_PATH,
-                new_directory_name=f"{ticker_symbol}_{entry_open_date}"
+                new_directory_name=f"{entry_open_date}_{ticker_symbol}"
             )
             raw_directory_path: Path = utl.make_directory(
                 base_directory_path=entry_directory_path,
                 new_directory_name="raw"
             )
 
-            # Download price data 
+            # Download raw data file
             raw_file_path: Path = utl.make_file(
                 base_directory_path=raw_directory_path,
-                new_file_name=f"{ticker_symbol}_{entry_open_date}_{action}.csv"
+                new_file_name=f"{entry_open_date}_{ticker_symbol}_{action}.csv"
             ) 
             utl.download_price_data_to_csv(
                 ticker_symbol,
                 utl.OPEN_PRICE_DATA_PERIOD,
                 utl.OPEN_PRICE_DATA_INTERVAL,
                 raw_file_path
-            )
-
-            # Make meta file 
-            meta_file_path: Path = utl.make_file(
-                base_directory_path=entry_directory_path,
-                new_file_name="meta.csv" )
-            utl.initialize_meta_file(
-                meta_file_path=meta_file_path
             )
 
             # Initialize meta data
@@ -130,12 +122,21 @@ Choose Index: """)
             meta_data.set_buy_order_placed_date(
                 buy_order_placed_date=buy_order_placed_date
             )
-            meta_data.set_open_average_true_range()
-            meta_data.set_open_max_price()
+            meta_data.set_average_true_range()
+            meta_data.set_max_price()
             meta_data.set_buy_order_placed_trigger()
             meta_data.set_trailing_stop_placed_trigger()
-            meta_data.set_open_risk_adjusted_position_size()
+            meta_data.set_risk_adjusted_position_size()
             meta_data.set_buy_order_placed_quantity()
+
+            # Compile meta data file 
+            meta_file_path: Path = utl.make_file(
+                base_directory_path=entry_directory_path,
+                new_file_name="meta.csv" )
+            utl.write_meta_file(
+                meta_data=meta_data,
+                meta_file_path=meta_file_path
+            )
 
         
 
