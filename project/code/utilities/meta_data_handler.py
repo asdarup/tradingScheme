@@ -18,7 +18,6 @@ class Meta_Data:
         self,
         company_name: str,
         ticker_symbol: str,
-        sector: str,
         entry_open_date: str,
         entry_directory_path: Path
     ) -> None:
@@ -31,30 +30,30 @@ class Meta_Data:
         # Stock properties
         self.company_name: str = company_name
         self.ticker_symbol: str = ticker_symbol
-        self.sector: str = sector
+        self.sector: Optional[str] = None
         self.market_capitalization: Optional[float] = None
         self.earnings_date: Optional[str] = None
 
         # Stock price patern properties
         self.pattern_this_q: Optional[str] = None
-        self.pattern_earnings_w: Optional[str] = None
-        self.pattern_earnings_w_minus_1: Optional[str] = None
-        self.pattern_earnings_w_minus_2: Optional[str] = None
+        self.pattern_earnings_week: Optional[str] = None
+        self.pattern_earnings_week_minus_1: Optional[str] = None
+        self.pattern_earnings_week_minus_2: Optional[str] = None
         self.percentage_depth_of_q_pattern: Optional[float] = None
-        self.percentage_depth_of_earnings_w_pattern: Optional[float] = None
-        self.percentage_depth_of_earnings_w_minus_1_pattern: Optional[float] = None
-        self.percentage_depth_of_earnings_w_minus_2_pattern: Optional[float] = None
+        self.percentage_depth_of_earnings_week_pattern: Optional[float] = None
+        self.percentage_depth_of_earnings_week_minus_1_pattern: Optional[float] = None
+        self.percentage_depth_of_earnings_week_minus_2_pattern: Optional[float] = None
         self.percentage_movement_of_q_pattern: Optional[float] = None
-        self.percentage_movement_of_earnings_w_pattern: Optional[float] = None
-        self.percentage_movement_of_earnings_w_minus_1_pattern: Optional[float] = None
-        self.percentage_movement_of_earnings_w_minus_2_pattern: Optional[float] = None
+        self.percentage_movement_of_earnings_week_pattern: Optional[float] = None
+        self.percentage_movement_of_earnings_week_minus_1_pattern: Optional[float] = None
+        self.percentage_movement_of_earnings_week_minus_2_pattern: Optional[float] = None
 
         # Stock price properties
-        self.percentage_increase_this_q: Optional[float] = None
-        self.percentage_increase_this_q_minus_1: Optional[float] = None
-        self.percentage_increase_this_q_minus_2: Optional[float] = None
-        self.percentage_increase_after_earnings_q_minus_1: Optional[float] = None
-        self.percentage_increase_after_earnings_q_minus_2: Optional[float] = None
+        self.percentage_movement_this_q: Optional[float] = None
+        self.percentage_movement_this_q_minus_1: Optional[float] = None
+        self.percentage_movement_this_q_minus_2: Optional[float] = None
+        self.percentage_movement_after_earnings_q_minus_1: Optional[float] = None
+        self.percentage_movement_after_earnings_q_minus_2: Optional[float] = None
 
         # Stock price analysis
         self.average_true_range: Optional[float] = None
@@ -99,80 +98,133 @@ class Meta_Data:
         # Utilities 
         self.entry_directory_path: Path = entry_directory_path
 
+
     # portfilio properties
     def set_portfolio_size(
         self,
-        portfolio_size
+        portfolio_size: float
     ) -> None:
         
         self.portfolio_size = portfolio_size 
 
         
     # Stock properties
-    def set_market_capitalization(
-        self
+    def set_sector(
+        self,
+        sector: str
     ) -> None:
+
+        self.sector = sector
+
+
+    def set_market_capitalization(
+        self,
+        market_capitalization: float
+    ) -> None:
+
+        self.market_capitalization = market_capitalization
         
         
-    # def set_earnings_date(
-    #     self
-    # ) -> None:
+    def set_earnings_date(
+        self,
+        earnings_date: str
+    ) -> None:
+
+        self.earnings_date = earnings_date
 
         
     # Stock price patern properties
-    # def set_pattern_this_q(
-    #     self
-    # ) -> None:
+    def set_pattern_this_q(
+        self,
+        pattern_this_q: str
+    ) -> None:
+
+        self.pattern_this_q = pattern_this_q
         
-    # def set_pattern_earnings_w(
-    #     self
-    # ) -> None:
+    def set_pattern_earnings_week(
+        self,
+        pattern_earnings_week: str
+    ) -> None:
+
+        self.pattern_earnings_week = pattern_earnings_week
         
-    # def set_pattern_earnings_w_minus_1(
-    #     self
-    # ) -> None:
+    def set_pattern_earnings_week_minus_1(
+        self,
+        pattern_earnings_week_minus_1: str
+    ) -> None:
+
+        self.pattern_earnings_week_minus_1 = pattern_earnings_week_minus_1
+  
+    def set_pattern_earnings_week_minus_2(
+        self,
+        pattern_earnings_week_minus_2: str
+    ) -> None:
+
+        self.pattern_earnings_week_minus_2 = pattern_earnings_week_minus_2
         
-    # def set_pattern_earnings_w_minus_2(
-    #     self
-    # ) -> None:
+    def set_percentage_depth_of_q_pattern(
+        self,
+        percentage_depth_of_q_pattern: float
+    ) -> None:
+
+        self.percentage_depth_of_q_pattern = percentage_depth_of_q_pattern
         
-    # def set_percentage_depth_of_q_pattern(
-    #     self
-    # ) -> None:
+    def set_percentage_depth_of_earnings_week_pattern(
+        self,
+        percentage_depth_of_earnings_week_pattern: float  
+    ) -> None:
+
+        self.percentage_depth_of_earnings_week_pattern = percentage_depth_of_earnings_week_pattern
         
-    # def set_percentage_depth_of_earnings_w_pattern(
-    #     self
-    # ) -> None:
+    def set_percentage_depth_of_earnings_week_minus_1_pattern(
+        self,
+        percentage_depth_of_earnings_week_minus_1_pattern: float
+    ) -> None:
+
+        self.percentage_depth_of_earnings_week_minus_1_pattern = percentage_depth_of_earnings_week_minus_1_pattern
+  
+    def set_percentage_depth_of_earnings_week_minus_2_pattern(
+        self,
+        percentage_depth_of_earnings_week_minus_2_pattern: float
+    ) -> None:
+
+        self.percentage_depth_of_earnings_week_minus_2_pattern = percentage_depth_of_earnings_week_minus_2_pattern
         
-    # def set_percentage_depth_of_earnings_w_minus_1_pattern(
-    #     self
-    # ) -> None:
+    def set_percentage_movement_of_q_pattern(
+        self,
+        percentage_movement_of_q_pattern: float
+    ) -> None:
+
+        self.percentage_movement_of_q_pattern = percentage_movement_of_q_pattern
         
-    # def set_percentage_depth_of_earnings_w_minus_2_pattern(
-    #     self
-    # ) -> None:
+    def set_percentage_movement_of_earnings_week_pattern(
+        self,
+        percentage_movement_of_earnings_week_pattern: float
+    ) -> None:
+
+        self.percentage_movement_of_earnings_week_pattern = percentage_movement_of_earnings_week_pattern
         
-    # def set_percentage_movement_of_q_pattern(
-    #     self
-    # ) -> None:
+    def set_percentage_movement_of_earnings_week_minus_1_pattern(
+        self,
+        percentage_movement_of_earnings_week_minus_1_pattern: float
+    ) -> None:
+
+        self.percentage_movement_of_earnings_week_minus_1_pattern = percentage_movement_of_earnings_week_minus_1_pattern
         
-    # def set_percentage_movement_of_earnings_w_pattern(
-    #     self
-    # ) -> None:
-        
-    # def set_percentage_movement_of_earnings_w_minus_1_pattern(
-    #     self
-    # ) -> None:
-        
-    # def set_percentage_movement_of_earnings_w_minus_2_pattern(
-    #     self
-    # ) -> None:
+    def set_percentage_movement_of_earnings_week_minus_2_pattern(
+        self,
+        percentage_movement_of_earnings_week_minus_2_pattern: float
+    ) -> None:
+
+        self.percentage_movement_of_earnings_week_minus_2_pattern = percentage_movement_of_earnings_week_minus_2_pattern
 
         
     # Stock price properties
-    # def set_percentage_increase_this_q(
-    #     self
-    # ) -> None:
+    def set_percentage_movement_this_q(
+        self
+    ) -> None:
+
+        
         
     # def set_percentage_increase_this_q_minus_1(
     #     self
@@ -187,10 +239,6 @@ class Meta_Data:
     # ) -> None:
         
     # def set_percentage_increase_after_earnings_q_minus_2(
-    #     self
-    # ) -> None:
-        
-    # def set_percentage_increase_after_earnings_q_minus_3(
     #     self
     # ) -> None:
 
