@@ -67,7 +67,6 @@ Choose Index: """)
 
         # Evaluate user input
         if open_new_entry_secondary_action not in OPEN_NEW_ENTRY_SECONDARY_ACTION.values():
-            
             # Wrong input error handling 
             print (f"Invalid input. Valid inputs: {VALID_OPEN_NEW_ENTRY_SECONDARY_ACTION}")
         
@@ -100,10 +99,10 @@ Choose Index: """)
                 new_file_name=f"{entry_open_date}_{ticker_symbol}_{action}.csv"
             ) 
             utl.download_price_data_to_csv(
-                ticker_symbol,
-                utl.OPEN_PRICE_DATA_PERIOD,
-                utl.OPEN_PRICE_DATA_INTERVAL,
-                raw_file_path
+                ticker_symbol=ticker_symbol,
+                period=utl.OPEN_PRICE_DATA_PERIOD,
+                interval=utl.OPEN_PRICE_DATA_INTERVAL,
+                target_file_path=raw_file_path
             )
 
             # Initialize meta data
@@ -120,7 +119,7 @@ Choose Index: """)
                 buy_order_placed_date=buy_order_placed_date
             )
             meta_data.set_average_true_range()
-            meta_data.set_max_price()
+            meta_data.set_periode_max_price()
             meta_data.set_buy_order_placed_trigger()
             meta_data.set_trailing_stop_placed_trigger()
             meta_data.set_risk_adjusted_position_size()
@@ -135,7 +134,54 @@ Choose Index: """)
                 meta_file_path=meta_file_path
             )
 
-        
+        elif open_new_entry_secondary_action == "preliminary_entry":
+            # Set initial parameters
+            ticker_symbol: str = input("Ticker Symbol: ").upper()
+            sector: str = input("Sector: ")
+            entry_open_date: str = input("Open trade, YYMMDD: ")
+            action: str = "open"
+
+            # Make entry
+            entry_directory_path: Path = utl.make_directory(
+                base_directory_path=LOG_DIRECTORY_PATH,
+                new_directory_name=f"{entry_open_date}_{ticker_symbol}"
+            )
+            raw_directory_path: Path = utl.make_directory(
+                base_directory_path=entry_directory_path,
+                new_directory_name="raw"
+            )
+
+            # Download raw data file
+            raw_file_path: Path = utl.make_file(
+                base_directory_path=raw_directory_path,
+                new_file_name=f"{entry_open_date}_{ticker_symbol}_{action}.csv"
+            ) 
+            utl.download_price_data_to_csv(
+                ticker_symbol=ticker_symbol,
+                period=utl.OPEN_PRICE_DATA_PERIOD,
+                interval=utl.OPEN_PRICE_DATA_INTERVAL,
+                target_file_path=raw_file_path
+            )
+
+            # Initialize meta data
+            meta_data: utl.Meta_Data = utl.Meta_Data(
+                ticker_symbol=ticker_symbol,
+                sector=sector,
+                entry_open_date=entry_open_date,
+                entry_directory_path=entry_directory_path
+            )
+            meta_data.set_average_true_range()
+
+            # Compile meta data file 
+            meta_file_path: Path = utl.make_file(
+                base_directory_path=entry_directory_path,
+                new_file_name="meta.csv" )
+            utl.write_meta_file(
+                meta_data=meta_data,
+                meta_file_path=meta_file_path
+            )
+
+
 
 
 

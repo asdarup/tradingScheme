@@ -25,8 +25,8 @@ class Meta_Data:
 
         # portfilio properties
         self.portfolio_size: Optional[float] = None
-        self.portfolio_risk_limit: Optional[float] = None
-        self.position_size_limit: Optional[float] = None
+        self.portfolio_risk_limit: float = cnf.PORTFOLIO_RISK_LIMIT
+        self.position_size_limit: float = cnf.POSITION_SIZE_LIMIT
 
         # Stock properties
         self.company_name: str = company_name
@@ -88,6 +88,7 @@ class Meta_Data:
 
         # Lifecycle properties
         self.entry_open_date: str = entry_open_date
+        self.entry_triggered: Optional[bool] = None
         self.entry_close_date: Optional[str] = None
 
         # profit loss properties
@@ -105,20 +106,13 @@ class Meta_Data:
     ) -> None:
         
         self.portfolio_size = portfolio_size 
-        
-    # def set_portfolio_risk_limit(
-    #     self
-    # ) -> None:
-        
-    # def set_position_size_limit(
-    #     self
-    # ) -> None:
 
         
     # Stock properties
-    # def set_market_capitalization(
-    #     self
-    # ) -> None:
+    def set_market_capitalization(
+        self
+    ) -> None:
+        
         
     # def set_earnings_date(
     #     self
@@ -449,7 +443,6 @@ def write_meta_file(
             "percentage_increase_this_q_minus_2",
             "percentage_increase_after_earnings_q_minus_1",
             "percentage_increase_after_earnings_q_minus_2",
-            "percentage_increase_after_earnings_q_minus_3",
             
             # Stock price analysis
             "average_true_range",
@@ -483,6 +476,7 @@ def write_meta_file(
             
             # Lifecycle properties
             "entry_open_date",
+            "entry_triggered",
             "entry_close_date",
             
             # profit loss properties
@@ -506,12 +500,18 @@ def write_meta_file(
             meta_data.earnings_date,
 
             # Stock price patern properties
-            meta_data.pattern,
-            meta_data.breakout_percentage_from_resistance,
-            meta_data.flag_depth_percent,
-            meta_data.flag_length_days,
-            meta_data.up_trend__depth_percent,
-            meta_data.up_trend_length_days,
+            meta_data.pattern_this_q,
+            meta_data.pattern_earnings_w,
+            meta_data.pattern_earnings_w_minus_1,
+            meta_data.pattern_earnings_w_minus_2,
+            meta_data.percentage_depth_of_q_pattern,
+            meta_data.percentage_depth_of_earnings_w_pattern,
+            meta_data.percentage_depth_of_earnings_w_minus_1_pattern,
+            meta_data.percentage_depth_of_earnings_w_minus_2_pattern,
+            meta_data.percentage_movement_of_q_pattern,
+            meta_data.percentage_movement_of_earnings_w_pattern,
+            meta_data.percentage_movement_of_earnings_w_minus_1_pattern,
+            meta_data.percentage_movement_of_earnings_w_minus_2_pattern,
 
 
             # Stock price properties
@@ -520,7 +520,6 @@ def write_meta_file(
             meta_data.percentage_increase_this_q_minus_2,
             meta_data.percentage_increase_after_earnings_q_minus_1,
             meta_data.percentage_increase_after_earnings_q_minus_2,
-            meta_data.percentage_increase_after_earnings_q_minus_3,
 
             # Stock price analysis
             meta_data.average_true_range,
@@ -554,6 +553,7 @@ def write_meta_file(
 
             # Lifecycle properties
             meta_data.entry_open_date,
+            meta_data.entry_triggered,
             meta_data.entry_close_date,
 
             # profit loss properties
