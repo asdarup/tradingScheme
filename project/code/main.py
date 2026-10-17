@@ -8,10 +8,7 @@ from pathlib import Path
 BASE_DIRECTORY_PATH: Path = Path(__file__).resolve().parent.parent
 LOG_DIRECTORY_PATH: Path = BASE_DIRECTORY_PATH/"log"
 
-# User specific parameters
-
-
-# User actions
+# User ations
 INITIAL_ACTIONS: dict[str, str] = {
     "0": "exit_program",
     "1": "open_new_entry",
@@ -22,7 +19,6 @@ INITIAL_ACTIONS: dict[str, str] = {
 }
 VALID_INITIAL_ACTIONS: str = ", ".join(INITIAL_ACTIONS.keys())
 
-
 OPEN_NEW_ENTRY_SECONDARY_ACTION: dict[str, str] = {
     "0": "return_to_main_menu",
     "1": "operational_entry",
@@ -31,7 +27,7 @@ OPEN_NEW_ENTRY_SECONDARY_ACTION: dict[str, str] = {
 VALID_OPEN_NEW_ENTRY_SECONDARY_ACTION: str = ", ".join(OPEN_NEW_ENTRY_SECONDARY_ACTION.keys())
 
 
-# Logic
+# main
 while True:
     # Get initial user input 
     initial_action: str = input("""
@@ -49,11 +45,11 @@ Index   Action
 Choose Index: """
     )
     initial_action: str = INITIAL_ACTIONS.get(initial_action)
-
+    
     # Evaluate user input
     if initial_action not in INITIAL_ACTIONS.values():
         # Wrong input error handling 
-        print (f"Invalid input. Valid inputs: {VALID_INITIAL_ACTIONS}")
+        print(f"Invalid input. Valid inputs: {VALID_INITIAL_ACTIONS}")
 
     elif initial_action == "exit_program":
         # Exsit program 
@@ -71,6 +67,7 @@ Choose Index: """)
 
         # Evaluate user input
         if open_new_entry_secondary_action not in OPEN_NEW_ENTRY_SECONDARY_ACTION.values():
+            
             # Wrong input error handling 
             print (f"Invalid input. Valid inputs: {VALID_OPEN_NEW_ENTRY_SECONDARY_ACTION}")
         
