@@ -33,34 +33,49 @@ class Meta_Data:
         self.sector: Optional[str] = None
         self.market_capitalization: Optional[float] = None
         self.earnings_date: Optional[str] = None
+        self.earnings_date_minus_1: Optional[str] = None
+        self.earnings_date_minus_2: Optional[str] = None
 
         # Stock price patern properties
-        self.pattern_this_q: Optional[str] = None
-        self.pattern_earnings_week: Optional[str] = None
-        self.pattern_earnings_week_minus_1: Optional[str] = None
-        self.pattern_earnings_week_minus_2: Optional[str] = None
-        self.percentage_depth_of_q_pattern: Optional[float] = None
-        self.percentage_depth_of_earnings_week_pattern: Optional[float] = None
-        self.percentage_depth_of_earnings_week_minus_1_pattern: Optional[float] = None
-        self.percentage_depth_of_earnings_week_minus_2_pattern: Optional[float] = None
-        self.percentage_movement_of_q_pattern: Optional[float] = None
-        self.percentage_movement_of_earnings_week_pattern: Optional[float] = None
-        self.percentage_movement_of_earnings_week_minus_1_pattern: Optional[float] = None
-        self.percentage_movement_of_earnings_week_minus_2_pattern: Optional[float] = None
+        self.pattern_in_earnings_week: Optional[str] = None                                    # input values: None, gap_up, up_trend, flat_trend, down_trend, gap_down
+        self.pattern_in_earnings_week_minus_1: Optional[str] = None                            # input values: None, gap_up, up_trend, flat_trend, down_trend, gap_down
+        self.pattern_in_earnings_week_minus_2: Optional[str] = None                            # input values: None, gap_up, up_trend, flat_trend, down_trend, gap_down
+        self.pattern_in_earnings_quadweek: Optional[str] = None                                # input values: None, gap_up, up_trend, flat_trend, down_trend, gap_down
+        self.pattern_in_earnings_quadweek_minus_1: Optional[str] = None                        # input values: None, gap_up, up_trend, flat_trend, down_trend, gap_down
+        self.pattern_in_earnings_quadweek_minus_2: Optional[str] = None                        # input values: None, gap_up, up_trend, flat_trend, down_trend, gap_down
+
+        self.percentage_depth_in_earnings_week: Optional[float] = None
+        self.percentage_depth_in_earnings_week_minus_1: Optional[float] = None
+        self.percentage_depth_in_earnings_week_minus_2: Optional[float] = None
+        self.percentage_depth_in_earnings_quadweek: Optional[float] = None
+        self.percentage_depth_in_earnings_quadweek_minus_1: Optional[float] = None
+        self.percentage_depth_in_earnings_quadweek_minus_2: Optional[float] = None
+
+        self.percentage_movement_in_earnings_week: Optional[float] = None
+        self.percentage_movement_in_earnings_week_minus_1: Optional[float] = None
+        self.percentage_movement_in_earnings_week_minus_2: Optional[float] = None
+        self.percentage_movement_in_earnings_quadweek: Optional[float] = None
+        self.percentage_movement_in_earnings_quadweek_minus_1: Optional[float] = None
+        self.percentage_movement_in_earnings_quadweek_minus_2: Optional[float] = None
 
         # Stock price properties
-        self.percentage_movement_this_q: Optional[float] = None
-        self.percentage_movement_this_q_minus_1: Optional[float] = None
-        self.percentage_movement_this_q_minus_2: Optional[float] = None
-        self.percentage_movement_after_earnings_q_minus_1: Optional[float] = None
-        self.percentage_movement_after_earnings_q_minus_2: Optional[float] = None
+        self.percentage_depth_on_earnings_day_in_q: Optional[float] = None
+        self.percentage_depth_on_earnings_day_in_q_minus_1: Optional[float] = None
+        self.percentage_depth_on_earnings_day_in_q_minus_2: Optional[float] = None
+
+        self.percentage_movement_in_q: Optional[float] = None
+        self.percentage_movement_in_q_minus_1: Optional[float] = None
+        self.percentage_movement_in_q_minus_2: Optional[float] = None
 
         # Stock price analysis
         self.average_true_range: Optional[float] = None
-        self.period_max_price: Optional[float] = None
-        self.q_max_price: Optional[float] = None
-        self.percentage_from_period_max_price: Optional[float] = None
-        self.percentage_from_q_max_price: Optional[float] = None
+
+        self.max_price_in_period: Optional[float] = None
+        self.max_price_in_q: Optional[float] = None
+
+        self.percentage_from_max_price_in_period: Optional[float] = None
+        self.percentage_from_max_price_in_q: Optional[float] = None
+
         self.risk_adjusted_position_size: Optional[float] = None
 
         # Buy order placed properties
@@ -87,8 +102,8 @@ class Meta_Data:
 
         # Lifecycle properties
         self.entry_open_date: str = entry_open_date
-        self.entry_triggered: Optional[bool] = None
         self.entry_close_date: Optional[str] = None
+        self.entry_triggered: Optional[bool] = None
 
         # profit loss properties
         self.realized_profit_loss_price: Optional[float] = None
@@ -116,14 +131,12 @@ class Meta_Data:
 
         self.sector = sector
 
-
     def set_market_capitalization(
         self,
         market_capitalization: float
     ) -> None:
 
         self.market_capitalization = market_capitalization
-        
         
     def set_earnings_date(
         self,
@@ -132,97 +145,161 @@ class Meta_Data:
 
         self.earnings_date = earnings_date
 
-        
-    # Stock price patern properties
-    def set_pattern_this_q(
+    def set_earnings_date_minus_1(
         self,
-        pattern_this_q: str
+        earnings_date_minus_1: str
     ) -> None:
 
-        self.pattern_this_q = pattern_this_q
-        
-    def set_pattern_earnings_week(
+        self.earnings_date_minus_1 = earnings_date_minus_1
+
+    def set_earnings_date_minus_2(
         self,
-        pattern_earnings_week: str
+        earnings_date_minus_2: str
     ) -> None:
 
-        self.pattern_earnings_week = pattern_earnings_week
+        self.earnings_date_minus_2 = earnings_date_minus_2
+
         
-    def set_pattern_earnings_week_minus_1(
+    # Stock price patern properties      
+    def set_pattern_in_earnings_week(
         self,
-        pattern_earnings_week_minus_1: str
+        pattern_in_earnings_week: str
     ) -> None:
 
-        self.pattern_earnings_week_minus_1 = pattern_earnings_week_minus_1
+        self.pattern_in_earnings_week = pattern_in_earnings_week
+        
+    def set_pattern_in_earnings_week_minus_1(
+        self,
+        pattern_in_earnings_week_minus_1: str
+    ) -> None:
+
+        self.pattern_in_earnings_week_minus_1 = pattern_in_earnings_week_minus_1
   
-    def set_pattern_earnings_week_minus_2(
+    def set_pattern_in_earnings_week_minus_2(
         self,
-        pattern_earnings_week_minus_2: str
+        pattern_in_earnings_week_minus_2: str
     ) -> None:
 
-        self.pattern_earnings_week_minus_2 = pattern_earnings_week_minus_2
+        self.pattern_in_earnings_week_minus_2 = pattern_in_earnings_week_minus_2
+
+    def set_pattern_in_earnings_quadweek(
+        self,
+        pattern_in_earnings_quadweek: str
+    ) -> None:
+
+        self.pattern_in_earnings_quadweek = pattern_in_earnings_quadweek
         
-    def set_percentage_depth_of_q_pattern(
+    def set_pattern_in_earnings_quadweek_minus_1(
         self,
-        percentage_depth_of_q_pattern: float
+        pattern_in_earnings_quadweek_minus_1: str
     ) -> None:
 
-        self.percentage_depth_of_q_pattern = percentage_depth_of_q_pattern
-        
-    def set_percentage_depth_of_earnings_week_pattern(
-        self,
-        percentage_depth_of_earnings_week_pattern: float  
-    ) -> None:
-
-        self.percentage_depth_of_earnings_week_pattern = percentage_depth_of_earnings_week_pattern
-        
-    def set_percentage_depth_of_earnings_week_minus_1_pattern(
-        self,
-        percentage_depth_of_earnings_week_minus_1_pattern: float
-    ) -> None:
-
-        self.percentage_depth_of_earnings_week_minus_1_pattern = percentage_depth_of_earnings_week_minus_1_pattern
+        self.pattern_in_earnings_quadweek_minus_1 = pattern_in_earnings_quadweek_minus_1
   
-    def set_percentage_depth_of_earnings_week_minus_2_pattern(
+    def set_pattern_in_earnings_quadweek_minus_2(
         self,
-        percentage_depth_of_earnings_week_minus_2_pattern: float
+        pattern_in_earnings_quadweek_minus_2: str
     ) -> None:
 
-        self.percentage_depth_of_earnings_week_minus_2_pattern = percentage_depth_of_earnings_week_minus_2_pattern
+        self.pattern_in_earnings_quadweek_minus_2 = pattern_in_earnings_quadweek_minus_2
+
         
-    def set_percentage_movement_of_q_pattern(
+    def set_percentage_depth_in_earnings_week(
         self,
-        percentage_movement_of_q_pattern: float
+        percentage_depth_in_earnings_week: float  
     ) -> None:
 
-        self.percentage_movement_of_q_pattern = percentage_movement_of_q_pattern
+        self.percentage_depth_in_earnings_week = percentage_depth_in_earnings_week
         
-    def set_percentage_movement_of_earnings_week_pattern(
+    def set_percentage_depth_in_earnings_week_minus_1(
         self,
-        percentage_movement_of_earnings_week_pattern: float
+        percentage_depth_in_earnings_week_minus_1: float
     ) -> None:
 
-        self.percentage_movement_of_earnings_week_pattern = percentage_movement_of_earnings_week_pattern
+        self.percentage_depth_in_earnings_week_minus_1 = percentage_depth_in_earnings_week_minus_1
+  
+    def set_percentage_depth_in_earnings_week_minus_2(
+        self,
+        percentage_depth_in_earnings_week_minus_2: float
+    ) -> None:
+
+        self.percentage_depth_in_earnings_week_minus_2 = percentage_depth_in_earnings_week_minus_2
+
+    def set_percentage_depth_in_earnings_quadweek(
+        self,
+        percentage_depth_in_earnings_quadweek: float  
+    ) -> None:
+
+        self.percentage_depth_in_earnings_quadweek = percentage_depth_in_earnings_quadweek
         
-    def set_percentage_movement_of_earnings_week_minus_1_pattern(
+    def set_percentage_depth_in_earnings_quadweek_minus_1(
         self,
-        percentage_movement_of_earnings_week_minus_1_pattern: float
+        percentage_depth_in_earnings_quadweek_minus_1: float
     ) -> None:
 
-        self.percentage_movement_of_earnings_week_minus_1_pattern = percentage_movement_of_earnings_week_minus_1_pattern
+        self.percentage_depth_in_earnings_quadweek_minus_1 = percentage_depth_in_earnings_quadweek_minus_1
+  
+    def set_percentage_depth_in_earnings_quadweek_minus_2(
+        self,
+        percentage_depth_in_earnings_quadweek_minus_2: float
+    ) -> None:
+
+        self.percentage_depth_in_earnings_quadweek_minus_2 = percentage_depth_in_earnings_quadweek_minus_2
+
         
-    def set_percentage_movement_of_earnings_week_minus_2_pattern(
+    def set_percentage_movement_in_earnings_week(
         self,
-        percentage_movement_of_earnings_week_minus_2_pattern: float
+        percentage_movement_in_earnings_week: float
     ) -> None:
 
-        self.percentage_movement_of_earnings_week_minus_2_pattern = percentage_movement_of_earnings_week_minus_2_pattern
+        self.percentage_movement_in_earnings_week = percentage_movement_in_earnings_week
+        
+    def set_percentage_movement_in_earnings_week_minus_1(
+        self,
+        percentage_movement_in_earnings_week_minus_1: float
+    ) -> None:
+
+        self.percentage_movement_in_earnings_week_minus_1 = percentage_movement_in_earnings_week_minus_1
+        
+    def set_percentage_movement_in_earnings_week_minus_2(
+        self,
+        percentage_movement_in_earnings_week_minus_2: float
+    ) -> None:
+
+        self.percentage_movement_in_earnings_week_minus_2 = percentage_movement_in_earnings_week_minus_2
+
+    def set_percentage_movement_in_earnings_quadweek(
+        self,
+        percentage_movement_in_earnings_quadweek: float
+    ) -> None:
+
+        self.percentage_movement_in_earnings_quadweek = percentage_movement_in_earnings_quadweek
+        
+    def set_percentage_movement_in_earnings_quadweek_minus_1(
+        self,
+        percentage_movement_in_earnings_quadweek_minus_1: float
+    ) -> None:
+
+        self.percentage_movement_in_earnings_quadweek_minus_1 = percentage_movement_in_earnings_quadweek_minus_1
+        
+    def set_percentage_movement_in_earnings_quadweek_minus_2(
+        self,
+        percentage_movement_in_earnings_quadweek_minus_2: float
+    ) -> None:
+
+        self.percentage_movement_in_earnings_quadweek_minus_2 = percentage_movement_in_earnings_quadweek_minus_2
 
         
     # Stock price properties
-    def set_percentage_movement_this_q(
+    def set_percentage_depth_on_earnings_day_in_q(
         self
     ) -> None:
+        
+        percentage_depth_on_earnings_day_in_q = dah.find_percentage_movement_in_period(
+            start_index=0,
+            end_index=cnf.Q_PERIOD,
+            source_file_path=self.get_raw_open_file_path()
+        )
 
         
         

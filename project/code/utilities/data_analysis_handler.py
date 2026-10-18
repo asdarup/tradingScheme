@@ -3,13 +3,15 @@ import pandas as pd
 from pathlib import Path
 
 # Stock price properties
-def find_percentage_movement_in_range(
+
+
+def find_percentage_movement_in_period(
         start_index: int,
         end_index: int,
         source_file_path: Path
 ) -> float:
 
-    parsed_data_set = find_data_in_range(
+    parsed_data_set = find_data_in_period(
         start_index=start_index,
         end_index=end_index,
         source_file_path=source_file_path
@@ -22,13 +24,13 @@ def find_percentage_movement_in_range(
 
 
  # Stock price analysis
-def find_average_true_range_in_range(
+def find_average_true_range_in_period(
     start_index: int,
     end_index: int,
     source_file_path: Path
 ) -> float:
     
-    parsed_data_set = find_data_in_range(
+    parsed_data_set = find_data_in_period(
         start_index=start_index,
         end_index=end_index + 1,
         source_file_path=source_file_path
@@ -52,13 +54,13 @@ def find_average_true_range_in_range(
     average_true_range = true_range.iloc[:-1].mean()
     return float(average_true_range)
 
-def find_max_price_in_range(
+def find_max_price_in_periode(
     start_index: int,
     end_index: int,
     source_file_path: Path
 ) -> float:
 
-    parsed_data_set = find_data_in_range(
+    parsed_data_set = find_data_in_period(
         start_index=start_index,
         end_index=end_index,
         source_file_path=source_file_path
@@ -69,13 +71,13 @@ def find_max_price_in_range(
     max_price = high.max()
     return float(max_price)
 
-def find_percentage_from_max_price_in_range(
+def find_percentage_from_max_price_in_period(
         start_index: int,
         end_index: int,
         source_file_path: Path
 ) -> float:
 
-    parsed_data_set = find_data_in_range(
+    parsed_data_set = find_data_in_period(
         start_index=start_index,
         end_index=end_index,
         source_file_path=source_file_path
@@ -101,7 +103,7 @@ def find_risk_adjusted_position_size(
 
 
 # Utilities
-def find_data_in_range(
+def find_data_in_period(
     start_index: int,
     end_index: int,
     source_file_path: Path
